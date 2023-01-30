@@ -1,10 +1,10 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import * as path from 'path';
 import * as isDev from 'electron-is-dev';
 import * as api from './api';
-import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
+// import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 
-import electronReload from 'electron-reload';
+// import electronReload from 'electron-reload';
 
 let win: BrowserWindow | null = null;
 
@@ -31,19 +31,28 @@ function createWindow() {
     win.on('closed', () => win = null);
 
     // Hot Reloading
-    if (isDev) {
-        // 'node_modules/.bin/electronPath'
-        electronReload(__dirname, {
-            electron: path.join(__dirname, '..', '..', 'node_modules', '.bin', 'electron'),
-            forceHardReset: true,
-            hardResetMethod: 'exit'
-        });
-    }
+    // Electron reload is having issues
+    // disable it for now and look at it again
+    //
+    // if (isDev) {
+    //     // 'node_modules/.bin/electronPath'
+    //     electronReload(__dirname, {
+    //         electron: path.join(__dirname, '..', '..', 'node_modules', '.bin', 'electron'),
+    //         forceHardReset: true,
+    //         hardResetMethod: 'exit'
+    //     });
+    // }
 
     // DevTools
-    installExtension(REACT_DEVELOPER_TOOLS)
-        .then((name) => console.log(`Added Extension:  ${name}`))
-        .catch((err) => console.log('An error occurred: ', err));
+    // Also throwing lots of errors. Ignore for now.
+    // installExtension(REACT_DEVELOPER_TOOLS)
+    //     .then((name) => console.log(`Added Extension:  ${name}`))
+    //     .catch((err) => console.log('An error occurred: ', err));
+
+    win.webContents.setWindowOpenHandler(({ url }) => {
+        shell.openExternal(url);
+        return { action: 'deny' };
+    });
 
     if (isDev) {
         win.webContents.openDevTools();
