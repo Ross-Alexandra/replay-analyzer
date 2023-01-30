@@ -26,21 +26,20 @@ export const analyzeFiles = {
             };
         }
 
-        const jsonBlob: Record<string, string> = {};
+        const jsonBlobs: Record<string, string>[] = [];
         files.forEach(file => {
             const fileName = path.parse(file).name;
             const fileJson = readFileSync(getTmpJsonPath(fileName));
-            const jsonData = JSON.parse(fileJson.toString());
+            const roundJson = JSON.parse(fileJson.toString());
 
-            const roundNumber = jsonData.header.roundNumber as number;
-            jsonBlob[`round-${roundNumber}`] = jsonData;
+            jsonBlobs.push(roundJson);
         });
 
         return {
             response: {
                 status: 'success',
                 message: 'Success!',
-                data: jsonBlob
+                data: jsonBlobs
             }
         };
     },

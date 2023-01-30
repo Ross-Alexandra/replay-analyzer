@@ -27,7 +27,7 @@ const Wrapper = styled.div`
 
 export const Home = () => {
     const [stage, setStage] = useState<InputStages>('upload');
-    const [roundData, setRoundData] = useState<unknown>('');
+    const [roundData, setRoundData] = useState<Round[]>([]);
 
     console.log(roundData, stage);
     return (
