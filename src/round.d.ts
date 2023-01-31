@@ -41,6 +41,7 @@ interface Header {
     additionalTags: string;
     gamemode: GameMode;
     roundsPerMatch: number;
+    roundNumber: number;
     overtimeRoundNumber: number;
     teams: Team[];
     players: Player[];
@@ -62,6 +63,7 @@ interface KillActivity {
 }
 
 type Activity = LocateObjectiveActivity | KillActivity;
+type ActivityFeed = Activity[];
 
 interface Round {
     header: Header;

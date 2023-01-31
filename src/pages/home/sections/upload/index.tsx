@@ -1,7 +1,10 @@
 import React, { useState, useCallback } from 'react';
 import styled from '@emotion/styled';
-import { Button, Layer, Spinner } from '../../../../components';
+import _ from 'lodash';
+
+import { Layer } from '../../../../components';
 import * as theme from '../../../../theme';
+import { AnalysisState } from './analysis-states';
 
 const Wrapper = styled(Layer)`
     display: flex;
@@ -49,22 +52,26 @@ export const Upload: React.FC<UploadProps> = ({
 }) => {
     const [filesToAnalyze, setFilesToAnalyze] = useState<FileWithPath[]>([]);
     const appendFiles = useCallback((files: FileWithPath[]) => {
-        setFilesToAnalyze(previousFiles => [
+        setFilesToAnalyze(previousFiles => _.uniqWith([
             ...previousFiles,
             ...files
-        ]);
+        ], (a, b) => a.path === b.path));
     }, []);
 
     const utilityLocation = window.localStorage.getItem('r6-dissect-location');
-    const [analyzing, setAnalyzing] = useState(false);
+    const [analysisState, setAnalysisState] = useState<AnalysisState>('not-started');
     const processUploadedFiles = useCallback(async () => {
-        setAnalyzing(true);
+        setAnalysisState('pending');
         const {response} = await window.api.analyzeFiles(utilityLocation, filesToAnalyze.map(file => file.path));
         
-        setRoundData(response);
-        setAnalyzing(false);
-        setStage('analyze');
-    }, [setAnalyzing, setRoundData, setStage, utilityLocation, filesToAnalyze]);
+        if (response.status === 'error') {
+            setAnalysisState('error');
+        } else {
+            setRoundData(response?.data);
+            setAnalysisState('success');
+            setStage('analyze');
+        }
+    }, [setAnalysisState, setRoundData, setStage, utilityLocation, filesToAnalyze]);
 
     return (
         <Wrapper className={className}>
@@ -82,13 +89,16 @@ export const Upload: React.FC<UploadProps> = ({
                         />
                     </div>
 
-                    {analyzing ? (
-                        <Spinner />
-                    ) : (
-                        <Button buttonType='primary' onClick={processUploadedFiles}>
-                            <p>Process</p>
-                        </Button>
+                    {filesToAnalyze.map(file => 
+                        <p key={file.path}>
+                            • {file.path.split('\\').pop()?.split('.').shift()}
+                        </p>
                     )}
+
+                    <AnalysisState
+                        processUploadedFiles={processUploadedFiles}
+                        analysisState={analysisState}
+                    />
                 </>
             }
         </Wrapper>

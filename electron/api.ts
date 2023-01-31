@@ -1,5 +1,6 @@
 import { IpcMainInvokeEvent, app, ipcRenderer } from 'electron';
 import { execFileSync } from 'child_process';
+import {chain} from 'lodash';
 import path = require('path');
 import { readFileSync } from 'fs';
 
@@ -26,15 +27,18 @@ export const analyzeFiles = {
             };
         }
 
-        const jsonBlobs: Record<string, string>[] = [];
-        files.forEach(file => {
-            const fileName = path.parse(file).name;
-            const fileJson = readFileSync(getTmpJsonPath(fileName));
-            const roundJson = JSON.parse(fileJson.toString());
+        const jsonBlobs = chain(files)
+            .map(file => {
+                const fileName = path.parse(file).name;
+                const fileJson = readFileSync(getTmpJsonPath(fileName));
+                const roundJson = JSON.parse(fileJson.toString());
 
-            jsonBlobs.push(roundJson);
-        });
+                return roundJson;
+            })
+            .sortBy('header.roundNumber', 'asc')
+            .value();
 
+        console.log(jsonBlobs.map(blob => blob.header.roundNumber));
         return {
             response: {
                 status: 'success',
