@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from '@emotion/styled';
 import { Button, Layer } from '../../../../components';
 import _ from 'lodash';
@@ -10,13 +10,20 @@ const Wrapper = styled(Layer)`
     flex-direction: column;
     gap: 10px;
 
-    .export {
-        align-self: flex-start;
+    .coming-soon {
+
     }
 
-    .help-text {
-        margin-top: 15px;
-        font-size: 12px;
+    .button-row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        gap: 15px;
+    }
+
+    pre {
+        color: white;
     }
 `;
 
@@ -69,6 +76,9 @@ export const Analyze: React.FC<AnalyzeProps> = ({
     currentStage,
     roundData,
 }) => {
+    const [viewRaw, setViewRaw] = useState(false);
+    const toggleViewRaw = useCallback(() => setViewRaw(currentViewRaw => !currentViewRaw), []);
+
     return (
         <Wrapper className={className}>
             <h2>Analyze Rounds</h2>
@@ -82,10 +92,27 @@ export const Analyze: React.FC<AnalyzeProps> = ({
                             <a href={githubIssuesLInk} target='_blank' rel='noreferrer'>here</a>
                         </p>
                     </div>
+
                     <div className='button-row'>
                         <Button buttonType='primary' onClick={() => exportActivityFeedToCSV(roundData)}>
                             <p>Export Activity Feeds</p>
                         </Button>
+
+                        <Button buttonType='secondary' onClick={toggleViewRaw}>
+                            { viewRaw ? (
+                                <p>Hide Raw</p>
+                            ) : (
+                                <p>View Raw</p>
+                            )}
+                        </Button>
+                    </div>
+
+                    <div className='view-raw'>
+                        {viewRaw && (
+                            <pre>
+                                {JSON.stringify(roundData, null, 2)}
+                            </pre>
+                        )}
                     </div>
                 </>
             }
