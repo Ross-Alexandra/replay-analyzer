@@ -14,9 +14,11 @@ export const analyzeFiles = {
         try {
             files.forEach(file => {
                 const fileName = path.parse(file).name;
-                const parameters = [`${file}`, '-x json', getTmpJsonPath(fileName)];
+                const parameters = [file, '-x', getTmpJsonPath(fileName)];
     
+                console.log(`Executing ${utilityLocation} ${parameters.join(' ')}`);
                 execFileSync(utilityLocation, parameters);
+                console.log('success');
             });
         } catch {
             return {

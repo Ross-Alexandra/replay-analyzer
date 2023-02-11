@@ -52,7 +52,7 @@ function convertObjectToTable(data: object[]) {
     const headerToIndex = _.zipObject(headerRow, _.range(headerRow.length));
 
     const rows = data.map((row) => {
-        const newRow = _.fill(Array(headerRow.length), '[empty]');
+        const newRow = _.fill(Array(headerRow.length), null);
         _.forEach(row, (value, key) => {
             newRow[headerToIndex[key]] = value;
         });

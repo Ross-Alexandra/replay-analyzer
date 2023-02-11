@@ -1,11 +1,11 @@
 {
-  "name": "electron-react-template",
-  "version": "0.1.0",
+  "name": "replay-analyzer",
+  "version": "0.2.0",
   "private": true,
   "homepage": ".",
   "main": "build/electron/main.js",
   "author": "Ross Alexandra",
-  "description": "A GH template for my Electron/React apps.",
+  "description": "A tool to analyze replays from the game Tom Clancy's Rainbow Six: Siege",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
