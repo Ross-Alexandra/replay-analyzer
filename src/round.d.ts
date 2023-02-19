@@ -26,7 +26,7 @@ interface Player {
     heroName: number;
     alliance: number;
     roleImage: number;
-    roleName: 'AZAMI';
+    roleName: string;
     rolePortrait: number;
 }
 
@@ -50,22 +50,52 @@ interface Header {
     matchID: string;
 }
 
-interface LocateObjectiveActivity {
+interface BaseActivity {
+    type: string;
+    time: string;
+    timeInSeconds: number;
+}
+
+interface LocateObjectiveActivity extends BaseActivity {
     type: 'LOCATE_OBJECTIVE';
     username: string
 }
 
-interface KillActivity {
+interface KillActivity extends BaseActivity {
     type: 'KILL';
     username: string;
     target: string;
     headshot: boolean;
 }
 
-type Activity = LocateObjectiveActivity | KillActivity;
+interface PlantStartActivity extends BaseActivity {
+    type: 'DEFUSER_PLANT_START';
+    username: string;
+}
+
+interface PlantCompleteActivity extends BaseActivity {
+    type: 'DEFUSER_PLANT_COMPLETE';
+    username: string;
+}
+
+interface DisableStartActivity extends BaseActivity {
+    type: 'DEFUSER_DISABLE_START';
+    username: string;
+}
+
+interface DisableCompleteActivity extends BaseActivity {
+    type: 'DEFUSER_DISABLE_COMPLETE';
+    username: string;
+}
+
+type Activity = LocateObjectiveActivity | KillActivity | PlantStartActivity | PlantCompleteActivity | DisableStartActivity | DisableCompleteActivity;
 type ActivityFeed = Activity[];
 
 interface Round {
     header: Header;
     activityFeed: ActivityFeed;
+}
+
+type RoundsActivityFeedItem = Activity & {
+    roundNumber: number;
 }
