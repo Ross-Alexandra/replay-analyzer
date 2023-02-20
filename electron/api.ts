@@ -85,7 +85,14 @@ export const downloadLatestSupportedDissect = {
             const versionString = version.toString().match(/v(\d+).(\d+).(\d+)/g);
 
             // Don't download if we already have the latest version.
-            if (versionString && versionString[0] === LATEST_SUPPORTED_VERSION) return;
+            if (versionString && versionString[0] === LATEST_SUPPORTED_VERSION) {
+                return {
+                    status: 'success',
+                    meta: {
+                        path: getUtilityLocation()
+                    }
+                };
+            }
 
             const response = await fetch(LATEST_SUPPORTED_VERSION_DOWNLOAD);
             const buffer = await response.buffer();
