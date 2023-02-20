@@ -61,7 +61,7 @@ export const NoUtility = () => {
     return (
         <Wrapper>
             <Layer className='layer'>
-                <h1>Performing First Run Setup</h1>
+                <h1>Loading</h1>
                 <Spinner />
             </Layer>
         </Wrapper>

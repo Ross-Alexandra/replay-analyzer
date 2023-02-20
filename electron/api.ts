@@ -1,5 +1,5 @@
 import { IpcMainInvokeEvent, app, ipcRenderer } from 'electron';
-import { execFileSync } from 'child_process';
+import { execFileSync, execFile } from 'child_process';
 import {chain} from 'lodash';
 import path = require('path');
 import { readFileSync } from 'graceful-fs';
@@ -8,6 +8,7 @@ import * as unzip from 'unzip';
 import fetch from 'electron-fetch';
 import { createWriteStream } from 'fs';
 
+const LATEST_SUPPORTED_VERSION = 'v0.9.0';
 const LATEST_SUPPORTED_VERSION_DOWNLOAD = 'https://github.com/redraskal/r6-dissect/releases/download/v0.9.0/r6-dissect-v0.9.0-windows-amd64.zip';
 
 function getTmpJsonPath(fileName: string) {
@@ -20,14 +21,20 @@ function getInstallPath() {
     return path.join(userDataFolder, 'replay-analyzer', 'dissect');
 }
 
+function getUtilityLocation() {
+    const dissectLocation = path.join(getInstallPath(), 'dissect.exe');
+
+    return dissectLocation;
+}
+
 export const analyzeFiles = {
-    execute: async (event: IpcMainInvokeEvent, utilityLocation: string, files: string[]) => {
+    execute: async (event: IpcMainInvokeEvent, files: string[]) => {
         try {
             files.forEach(file => {
                 const fileName = path.parse(file).name;
                 const parameters = [file, '-x', getTmpJsonPath(fileName)];
     
-                execFileSync(utilityLocation, parameters);
+                execFileSync(getUtilityLocation(), parameters);
             });
         } catch {
             return {
@@ -65,12 +72,27 @@ export const analyzeFiles = {
 export const downloadLatestSupportedDissect = {
     execute: async () => {
         try {
+            const parameters = ['-v'];
+            const version = await new Promise<string>((resolve) => {
+                execFile(getUtilityLocation(), parameters, (err, stdout, stderr) => {
+                    if (err) {
+                        resolve('v0.0.0');
+                    } else {
+                        resolve(stdout.concat(stderr).trim());
+                    }
+                });
+            });
+            const versionString = version.toString().match(/v(\d+).(\d+).(\d+)/g);
+
+            // Don't download if we already have the latest version.
+            if (versionString && versionString[0] === LATEST_SUPPORTED_VERSION) return;
+
             const response = await fetch(LATEST_SUPPORTED_VERSION_DOWNLOAD);
             const buffer = await response.buffer();
 
             await new Promise((resolve, reject) => {
                 try {
-                    const exePath = path.join(getInstallPath(), 'dissect.exe');
+                    const exePath = getUtilityLocation();
                     const zip = unzip.Parse();
                     zip.on('entry', (entry: unzip.Entry) => {
                         const fileName = entry.path;
@@ -100,7 +122,7 @@ export const downloadLatestSupportedDissect = {
             return {
                 status: 'success',
                 meta: {
-                    path: path.join(getInstallPath(), 'dissect.exe')
+                    path: getUtilityLocation()
                 }
             };
         } catch (err) {

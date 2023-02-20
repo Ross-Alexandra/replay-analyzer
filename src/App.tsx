@@ -16,7 +16,7 @@ const Wrapper = styled.div`
     padding: 10px;
 `;
 
-async function downloadDissect(navigate: NavigateFunction) {
+async function setupDissect(navigate: NavigateFunction) {
     const {status, meta} = await window.api.downloadLatestSupportedDissect();
     if (status !== 'success') {
         navigate('/error');
@@ -31,14 +31,11 @@ async function downloadDissect(navigate: NavigateFunction) {
 
 export function App() {
     const navigate = useNavigate();
-    const utilityLocation = window.localStorage.getItem('r6-dissect-location');
-
+    
     useEffect(() => {
-        if (!utilityLocation) {
-            navigate('/no-utility');
-            downloadDissect(navigate);
-        }
-    }, [utilityLocation]);
+        navigate('/no-utility');
+        setupDissect(navigate);
+    }, []);
 
     return (
         <Wrapper>

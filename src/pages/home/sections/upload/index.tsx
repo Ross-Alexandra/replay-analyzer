@@ -58,11 +58,10 @@ export const Upload: React.FC<UploadProps> = ({
         ], (a, b) => a.path === b.path));
     }, []);
 
-    const utilityLocation = window.localStorage.getItem('r6-dissect-location');
     const [analysisState, setAnalysisState] = useState<AnalysisState>('not-started');
     const processUploadedFiles = useCallback(async () => {
         setAnalysisState('pending');
-        const {response} = await window.api.analyzeFiles(utilityLocation, filesToAnalyze.map(file => file.path));
+        const {response} = await window.api.analyzeFiles(filesToAnalyze.map(file => file.path));
         
         if (response.status === 'error') {
             setAnalysisState('error');
@@ -71,7 +70,7 @@ export const Upload: React.FC<UploadProps> = ({
             setAnalysisState('success');
             setStage('analyze');
         }
-    }, [setAnalysisState, setRoundData, setStage, utilityLocation, filesToAnalyze]);
+    }, [setAnalysisState, setRoundData, setStage, filesToAnalyze]);
 
     return (
         <Wrapper className={className}>
