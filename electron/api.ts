@@ -6,7 +6,7 @@ import { readFileSync } from 'graceful-fs';
 
 import * as unzip from 'unzip';
 import fetch from 'electron-fetch';
-import { createWriteStream } from 'fs';
+import { createWriteStream, existsSync, mkdirSync } from 'fs';
 
 const LATEST_SUPPORTED_VERSION = 'v0.9.0';
 const LATEST_SUPPORTED_VERSION_DOWNLOAD = 'https://github.com/redraskal/r6-dissect/releases/download/v0.9.0/r6-dissect-v0.9.0-windows-amd64.zip';
@@ -72,6 +72,10 @@ export const analyzeFiles = {
 export const downloadLatestSupportedDissect = {
     execute: async () => {
         try {
+            if (!existsSync(getInstallPath())){
+                mkdirSync(getInstallPath());
+            }
+
             const parameters = ['-v'];
             const version = await new Promise<string>((resolve) => {
                 execFile(getUtilityLocation(), parameters, (err, stdout, stderr) => {
