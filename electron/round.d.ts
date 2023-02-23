@@ -99,3 +99,22 @@ interface Round {
 type RoundsActivityFeedItem = Activity & {
     roundNumber: number;
 }
+
+interface RoundMeta {
+    _id: string; // An internally used ID.
+    tags: string[];
+    map: string;
+    matchID: string;
+    roundNumber: number;
+    timestamp: string;
+}
+
+interface MetaData {
+    version: `${number}.${number}.${number}`;
+    rounds: Record<string, RoundMeta>;
+}
+
+interface RoundWithMeta {
+    meta: RoundMeta;
+    data: Round;
+}
