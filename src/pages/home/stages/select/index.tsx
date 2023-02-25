@@ -36,15 +36,16 @@ interface SelectProps extends Omit<React.HTMLProps<HTMLDivElement>, 'as'> {
 //     - (/) The user should be able to select & deselect all previously uploaded rounds
 //     - (/) The user should be able to select & deselect individual previously uploaded rounds
 //
-//     - ( ) The user should be able to sort the list of previously uploaded rounds by any column
+//     - (/) The user should be able to sort the list of previously uploaded rounds by any column
+
 //     - ( ) The user should be able to filter the list of previously uploaded rounds by tag(s)
 //     - ( ) The user should be able to filter the list of previously uploaded rounds by date
 //     - ( ) The user should be able to filter the list of previously uploaded rounds by map
 //     - ( ) The user should be able to select & deselect all previously uploaded rounds that match the filters
 //
-//     - ( ) The user should be able to manage which tags are applied to the selected rounds
+//     - (/) The user should be able to manage which tags are applied to the selected rounds
 //
-//     - ( ) The user should be able to remove previously uploaded rounds
+//     - (/) The user should be able to remove previously uploaded rounds
 export const Select: React.FC<SelectProps> = ({
     rounds,
     roundsToAnalyze,

@@ -4,6 +4,8 @@ import * as theme from '../../../../theme';
 import moment from 'moment';
 import _ from 'lodash';
 import { Tag } from '../../../../components/tag-manager/tag';
+import { FilterButtons } from '../../../../components/filter-buttons';
+import { useSortedRounds } from './sorting';
 
 const Wrapper = styled.div`
     max-height: 75vh;
@@ -81,6 +83,19 @@ const Wrapper = styled.div`
         }
     }
 
+    .header-cell {
+        display: flex;
+        flex-direction: row;
+
+        align-items: center;
+
+        gap: 5px;
+
+        svg {
+            cursor: pointer;
+        }
+    }
+
     .input-cell {
         display: grid;
         place-items: center;
@@ -120,6 +135,8 @@ export const SelectTable: React.FC<SelectTableProps> = ({
     selectNone,
     ...props
 }) => {
+    const [sortedRounds, sorts, toggleSort] = useSortedRounds(rounds);
+
     return (
         <Wrapper {...props}>
             <table>
@@ -140,14 +157,42 @@ export const SelectTable: React.FC<SelectTableProps> = ({
                                 readOnly
                             />
                         </td>
-                        <td>Map</td>
-                        <td>Round #</td>
-                        <td>Date Played</td>
-                        <td>Tags</td>
+                        <td className='header-cell'>
+                            Map
+                            <FilterButtons
+                                direction={sorts.map}
+                                onUpClick={() => toggleSort('map', 'asc')}
+                                onDownClick={() => toggleSort('map', 'desc')}
+                            />
+                        </td>
+                        <td className='header-cell'>
+                            Round #
+                            <FilterButtons
+                                direction={sorts.roundNumber}
+                                onUpClick={() => toggleSort('roundNumber', 'asc')}
+                                onDownClick={() => toggleSort('roundNumber', 'desc')}
+                            />
+                        </td>
+                        <td className='header-cell'>
+                            Date Played
+                            <FilterButtons
+                                direction={sorts.timestamp}
+                                onUpClick={() => toggleSort('timestamp', 'asc')}
+                                onDownClick={() => toggleSort('timestamp', 'desc')}
+                            />
+                        </td>
+                        <td className='header-cell'>
+                            Tags
+                            <FilterButtons
+                                direction={sorts.tags}
+                                onUpClick={() => toggleSort('tags', 'asc')}
+                                onDownClick={() => toggleSort('tags', 'desc')}
+                            />
+                        </td>
                     </tr>
                 </thead>
                 <tbody>
-                    {rounds.map((round) => (
+                    {sortedRounds.map((round) => (
                         <tr 
                             key={round.meta._id}
                             className={selectedRounds.includes(round.meta._id) ? 'selected' : ''}

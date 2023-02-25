@@ -42,14 +42,9 @@ interface UploadProps extends Omit<React.HTMLProps<HTMLDivElement>, 'as'> {
     onFilesUploaded: () => void;
 }
 
-// TODO:
-//   1. Optionally Uploads rounds for later analysis
-//     - (/) The user should be able to upload new rounds
-//     - ( ) The user should be able to upload new rounds and tag them with custom tag(s)
-//
-// Nice to have:
-//  1. Each round should have a badge beside it indicating that it has
-//     successfully been uploaded.
+// Todo:
+//  1. ( ) Each round should have a badge beside it indicating that it has
+//         successfully been uploaded.
 export const Upload: React.FC<UploadProps> = ({
     appendRound,
     onFilesUploaded,
