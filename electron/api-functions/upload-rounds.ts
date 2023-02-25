@@ -1,11 +1,11 @@
 import { IpcMainInvokeEvent, ipcRenderer } from 'electron';
 import { execFileSync } from 'child_process';
-import { copyFileSync, writeFileSync } from 'fs';
+import { copyFileSync } from 'fs';
 import * as _ from 'lodash';
 import * as path from 'path';
 import {v4 as uuidv4} from 'uuid';
 
-import { getMetadataPath, getRoundStoragePath, getUtilityLocation, readMetadataFile } from './helpers';
+import { getRoundStoragePath, getUtilityLocation, readMetadataFile, writeMetadataFile } from './helpers';
 import type { ApiFunction } from './type';
 
 
@@ -26,10 +26,6 @@ function storeReplayFile(groupFolder: string, file: string) {
 function saveReplayJson(file: string, saveTo: string) {
     const parameters = [file, '-x', saveTo];
     execFileSync(getUtilityLocation(), parameters);
-}
-
-function writeMetadataFile(metadata: MetaData) {
-    writeFileSync(getMetadataPath(), JSON.stringify(metadata, null, 2));
 }
 
 export const uploadRounds: ApiFunction<[string[], string[]], UploadRoundGroupResponse> = {
@@ -54,7 +50,8 @@ export const uploadRounds: ApiFunction<[string[], string[]], UploadRoundGroupRes
                     map: _.get(fileJson, 'header.map.name'),
                     matchID: _.get(fileJson, 'header.matchID'),
                     roundNumber: _.get(fileJson, 'header.roundNumber'),
-                    timestamp: _.get(fileJson, 'header.timestamp')
+                    timestamp: _.get(fileJson, 'header.timestamp'),
+                    originalFilename: fileName
                 };
 
                 writeMetadataFile(fileMetadata);

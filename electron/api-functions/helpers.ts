@@ -51,3 +51,7 @@ export function readMetadataFile(): MetaData  {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     return require(metadataPath);
 }
+
+export function writeMetadataFile(metadata: MetaData) {
+    writeFileSync(getMetadataPath(), JSON.stringify(metadata, null, 2));
+}

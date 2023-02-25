@@ -107,6 +107,7 @@ interface RoundMeta {
     matchID: string;
     roundNumber: number;
     timestamp: string;
+    originalFilename: string;
 }
 
 interface MetaData {

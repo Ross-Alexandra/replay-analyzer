@@ -39,6 +39,19 @@ interface AnalyzeProps extends Omit<React.HTMLProps<HTMLDivElement>, 'as'> {
     rounds: Round[];
 }
 
+// TODO:
+//   3. Analyzes the selected rounds
+//     - ( ) The user should be able to see the results of the analysis in a table
+//       - ( ) The user should be able to see data about the rounds in the table
+//       - ( ) The user should be able to see data about the players in the table
+//       - ( ) The user should be able to see data about the teams in the table
+//       - ( ) The user should be able to see data about the maps in the table
+//       - ( ) The user should be able to see data about each match in the table
+//       - ( ) The user should be able to see data about each round in the table
+//     - ( ) The user should be able to sort the table by any column
+//     - ( ) The user should be able to filter the table by any column
+//     - ( ) The user should be able to filter the table by multiple columns
+//     - (/) The user should be able to save the results of the analysis to a csv file 
 export const Analyze: React.FC<AnalyzeProps> = ({
     className,
     rounds,
