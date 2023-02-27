@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import React from 'react';
-import * as theme from '../../../../theme';
 import moment from 'moment';
 import _ from 'lodash';
 import { Tag } from '../../../../components/tag-manager/tag';
@@ -12,21 +11,6 @@ const Wrapper = styled.div`
     overflow-y: auto;
 
     border: 1px solid #FFFFFF40;
-
-    ::-webkit-scrollbar {
-        width: 5px;
-        background-color: #FFFFFF10;
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background: #000;
-        background-color: ${theme.colors.background};
-
-        border-radius: 4px;
-    }
-    
-    scrollbar-color: #FFFFFF40 #00000000;
-    scrollbar-width: thin;
 
     table {
         width: 100%;
@@ -64,7 +48,7 @@ const Wrapper = styled.div`
     tr {
         display: grid;
         
-        grid-template-columns: .25fr 1.5fr 1.5fr 1.5fr 4fr;
+        grid-template-columns: .25fr 1.5fr 1.5fr 1.8fr 4fr;
     }
 
     td {
@@ -138,85 +122,88 @@ export const SelectTable: React.FC<SelectTableProps> = ({
     const [sortedRounds, sorts, toggleSort] = useSortedRounds(rounds);
 
     return (
-        <Wrapper {...props}>
-            <table>
-                <thead>
-                    <tr>
-                        <td className='input-cell'>
-                            <input
-                                type="checkbox"
-                                checked={selectedRounds.length > 0}
-                                onClick={() => {
-                                    if (selectedRounds.length > 0) {
-                                        selectNone();
-                                        return;
-                                    }
-
-                                    selectAll();
-                                }}
-                                readOnly
-                            />
-                        </td>
-                        <td className='header-cell'>
-                            Map
-                            <FilterButtons
-                                direction={sorts.map}
-                                onUpClick={() => toggleSort('map', 'asc')}
-                                onDownClick={() => toggleSort('map', 'desc')}
-                            />
-                        </td>
-                        <td className='header-cell'>
-                            Round #
-                            <FilterButtons
-                                direction={sorts.roundNumber}
-                                onUpClick={() => toggleSort('roundNumber', 'asc')}
-                                onDownClick={() => toggleSort('roundNumber', 'desc')}
-                            />
-                        </td>
-                        <td className='header-cell'>
-                            Date Played
-                            <FilterButtons
-                                direction={sorts.timestamp}
-                                onUpClick={() => toggleSort('timestamp', 'asc')}
-                                onDownClick={() => toggleSort('timestamp', 'desc')}
-                            />
-                        </td>
-                        <td className='header-cell'>
-                            Tags
-                            <FilterButtons
-                                direction={sorts.tags}
-                                onUpClick={() => toggleSort('tags', 'asc')}
-                                onDownClick={() => toggleSort('tags', 'desc')}
-                            />
-                        </td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {sortedRounds.map((round) => (
-                        <tr 
-                            key={round.meta._id}
-                            className={selectedRounds.includes(round.meta._id) ? 'selected' : ''}
-                            onClick={() => toggleRound(round)}                    
-                        >
+        <>
+            <Wrapper {...props}>
+                <table>
+                    <thead>
+                        <tr>
                             <td className='input-cell'>
                                 <input
                                     type="checkbox"
-                                    checked={selectedRounds.includes(round.meta._id)}
+                                    checked={selectedRounds.length > 0}
+                                    onClick={() => {
+                                        if (selectedRounds.length > 0) {
+                                            selectNone();
+                                            return;
+                                        }
+
+                                        selectAll();
+                                    }}
                                     readOnly
                                 />
                             </td>
-                            <td>{_.snakeCase(round.meta.map).replaceAll('_', ' ')}</td>
-                            <td>Round #{round.data.header.roundNumber + 1}</td>
-                            <td>{moment(round.meta.timestamp).format('MMM Do, YYYY')}</td>
-                            <td className='tag-cell'>
-                                {round.meta.tags.map(tag => 
-                                    <Tag className='small-tag' label={tag} key={tag} />
-                                )}
+                            <td className='header-cell'>
+                                Map
+                                <FilterButtons
+                                    direction={sorts.map}
+                                    onUpClick={() => toggleSort('map', 'asc')}
+                                    onDownClick={() => toggleSort('map', 'desc')}
+                                />
+                            </td>
+                            <td className='header-cell'>
+                                Round #
+                                <FilterButtons
+                                    direction={sorts.roundNumber}
+                                    onUpClick={() => toggleSort('roundNumber', 'asc')}
+                                    onDownClick={() => toggleSort('roundNumber', 'desc')}
+                                />
+                            </td>
+                            <td className='header-cell'>
+                                Date Played
+                                <FilterButtons
+                                    direction={sorts.timestamp}
+                                    onUpClick={() => toggleSort('timestamp', 'asc')}
+                                    onDownClick={() => toggleSort('timestamp', 'desc')}
+                                />
+                            </td>
+                            <td className='header-cell'>
+                                Tags
+                                <FilterButtons
+                                    direction={sorts.tags}
+                                    onUpClick={() => toggleSort('tags', 'asc')}
+                                    onDownClick={() => toggleSort('tags', 'desc')}
+                                />
                             </td>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
-        </Wrapper>
+                    </thead>
+                    <tbody>
+                        {sortedRounds.map((round) => (
+                            <tr 
+                                key={round.meta._id}
+                                className={selectedRounds.includes(round.meta._id) ? 'selected' : ''}
+                                onClick={() => toggleRound(round)}                    
+                            >
+                                <td className='input-cell'>
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedRounds.includes(round.meta._id)}
+                                        readOnly
+                                    />
+                                </td>
+                                <td>{_.snakeCase(round.meta.map).replaceAll('_', ' ')}</td>
+                                <td>Round #{round.data.header.roundNumber + 1}</td>
+                                <td>{moment(round.meta.timestamp).format('MMM Do, YYYY')}</td>
+                                <td className='tag-cell'>
+                                    {round.meta.tags.map(tag => 
+                                        <Tag className='small-tag' label={tag} key={tag} />
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </Wrapper>
+        </>
+
     );
 };

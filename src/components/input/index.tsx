@@ -20,7 +20,9 @@ const Wrapper = styled.input`
     }
 `;
 
-type InputProps = Omit<React.HTMLProps<HTMLInputElement>, 'as'>
+interface InputProps extends Omit<React.HTMLProps<HTMLInputElement>, 'as'> {
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
 export const Input: React.FC<InputProps> = ({
     ...props

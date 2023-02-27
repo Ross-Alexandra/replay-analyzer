@@ -1,16 +1,26 @@
 import styled from '@emotion/styled';
-import React, {useCallback, useEffect} from 'react';
-import _ from 'lodash';
+import React, {useState} from 'react';
 
 import { Button } from '../../../../components';
-import { SettingsIcon } from '../../../../icons';
+import { FilterIcon, SettingsIcon } from '../../../../icons';
 import { SelectTable } from './select-table';
+import { useToggleable } from './useToggleable';
+import { SetFiltersModal } from '../../../../modals/set-filters';
 
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     
     gap: 10px;
+
+    .controls {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+
+        align-self: end;
+        align-items: center;
+    }
 
     button {
         display: flex;
@@ -53,59 +63,52 @@ export const Select: React.FC<SelectProps> = ({
     openMangeRoundsModal,
     ...props
 }) => {
-    const [selectedRounds, setSelectedRounds] = React.useState<string[]>(roundsToAnalyze.map((round) => round.meta._id));
-    const toggleRound = useCallback((round: RoundWithMeta) => {
-        _toggleRound(round);
+    const [filteredRounds, setFilteredRounds] = useState<RoundWithMeta[]>([]);
+    const [filterModalOpen, setFilterModalOpen] = useState(false);
 
-        setSelectedRounds((prev) => {
-            if (prev.includes(round.meta._id)) {
-                return prev.filter((id) => id !== round.meta._id);
-            }
-
-            return [...prev, round.meta._id];
-        });
-    }, [_toggleRound, setSelectedRounds]);
-
-    const selectAll = useCallback(() => {
-        const roundsToSelect = _.differenceWith(rounds, selectedRounds, (round, id) => round.meta._id === id);
-
-        roundsToSelect.forEach((round) => toggleRound(round));
-    }, [rounds, selectedRounds, toggleRound]);
-
-    const selectNone = useCallback(() => {
-        const roundsToDeselect = _.intersectionWith(rounds, selectedRounds, (round, id) => round.meta._id === id);
-
-        roundsToDeselect.forEach((round) => toggleRound(round));
-    }, [rounds, selectedRounds, toggleRound]);
-
-    // Whenever rounds are removed from the rounds array, remove them from the selectedRounds array
-    useEffect(() => {
-
-        setSelectedRounds((prev) => {
-            const roundsToRemove = _.differenceWith(prev, rounds, (id, round) => id === round.meta._id);
-
-            return _.difference(prev, roundsToRemove);
-        });
-    }, [rounds, setSelectedRounds]);
+    const {
+        selectedRounds,
+        toggleRound,
+        selectAll,
+        selectNone,
+    } = useToggleable(filteredRounds, roundsToAnalyze, _toggleRound);
 
     return (
-        <Wrapper {...props}>
-            <Button
-                buttonType='primary'
-                disabled={selectedRounds.length === 0}
-                onClick={openMangeRoundsModal}
-            >
-                <SettingsIcon size={17} />
-                <p>Manage Rounds</p>
-            </Button>
+        <>
+            <Wrapper {...props}>
+                <div className="controls">
+                    <Button
+                        buttonType='primary'
+                        onClick={() => setFilterModalOpen(true)}
+                    >
+                        <FilterIcon size={15} />
+                        <p>Filters</p>
+                    </Button>
+                    <Button
+                        buttonType='primary'
+                        disabled={selectedRounds.length === 0}
+                        onClick={openMangeRoundsModal}
+                    >
+                        <SettingsIcon size={17} />
+                        <p>Manage Rounds</p>
+                    </Button>
+                </div>
 
-            <SelectTable 
-                rounds={rounds}
-                selectedRounds={selectedRounds}
-                toggleRound={toggleRound}
-                selectAll={selectAll}
-                selectNone={selectNone}
+                <SelectTable 
+                    rounds={filteredRounds}
+                    selectedRounds={selectedRounds}
+                    toggleRound={toggleRound}
+                    selectAll={selectAll}
+                    selectNone={selectNone}
+                />
+            </Wrapper>        
+
+            <SetFiltersModal
+                isOpen={filterModalOpen}
+                onBackgroundClick={() => setFilterModalOpen(false)}
+                allRounds={rounds}
+                setRounds={setFilteredRounds}
             />
-        </Wrapper>        
+        </>
     );
 };

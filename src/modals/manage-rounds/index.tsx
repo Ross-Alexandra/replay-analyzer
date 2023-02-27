@@ -88,21 +88,6 @@ const Wrapper = styled(Modal)`
             max-height: 150px;
 
             overflow-y: auto;
-
-            ::-webkit-scrollbar {
-                width: 5px;
-                background-color: #FFFFFF10;
-            }
-        
-            ::-webkit-scrollbar-thumb {
-                background: #000;
-                background-color: ${theme.colors.background};
-        
-                border-radius: 4px;
-            }
-            
-            scrollbar-color: #FFFFFF40 #00000000;
-            scrollbar-width: thin;
         }
     }
 `;

@@ -58,7 +58,6 @@ export const Home = () => {
     } = useRounds(setStage);
 
     const [roundsToAnalyze, toggleRound] = useRoundsToAnalyze(allRounds);
-
     const [manageRoundsModalOpen, setManageRoundsModalOpen] = useState(false);
 
     return (
