@@ -26,7 +26,7 @@ export const comparators: Record<keyof RoundMeta, Record<string, ComparisonFunct
     },
 };
 
-export type Filter = {
+export interface Filter {
     _id: string;
     onField: keyof RoundMeta;
     comparison: keyof typeof comparators[keyof RoundMeta];
@@ -34,4 +34,9 @@ export type Filter = {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     value: any;
+}
+
+export interface FilterGroup {
+    _id: string;
+    filters: Filter[];
 }

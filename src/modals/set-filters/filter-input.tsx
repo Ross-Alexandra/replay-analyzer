@@ -29,6 +29,7 @@ const Wrapper = styled.div`
 
 interface FilterProps extends Omit<React.HTMLProps<HTMLDivElement>, 'as'> {
     filterBuilder: FilterBuilder;
+    subFilter?: boolean;
     onFilterChange: (filter: Filter) => void;
     onRemoveFilter: () => void;
 }

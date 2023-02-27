@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import {v4 as uuidv4} from 'uuid';
-import { Filter, comparators } from './types';
+import { Filter, FilterGroup, comparators } from './types';
 
 
 export function computeFilter(roundsToFilter: RoundWithMeta[], filter: Filter) {
@@ -18,6 +18,12 @@ export function computeFilter(roundsToFilter: RoundWithMeta[], filter: Filter) {
     });
 }
 
+export function computeFilterGroup(roundsToFilter: RoundWithMeta[], filterGroup: FilterGroup) {
+    const allResults = filterGroup.filters.flatMap(filter => computeFilter(roundsToFilter, filter));
+
+    return _.uniq(allResults);
+}
+
 export class FilterBuilder {
     private filter: Filter;
 
@@ -32,18 +38,19 @@ export class FilterBuilder {
         roundNumber: 0,
     };
 
-    private static defaultFilter: Filter = {
-        _id: '',
-        onField: 'map',
-        comparison: 'equalTo',
-        negated: false,
-        value: this.fieldToDefaultValue.map,
-    };
+    private static defaultFilter() {
+        return {
+            _id: uuidv4(),
+            onField: 'map' as keyof RoundMeta,
+            comparison: 'equalTo',
+            negated: false,
+            value: this.fieldToDefaultValue.map,
+        };
+    }
 
     constructor(filter?: Filter) {
         if (!filter) {
-            this.filter = FilterBuilder.defaultFilter;
-            this.filter._id = uuidv4();
+            this.filter = FilterBuilder.defaultFilter();
         } else {
             this.filter = filter;
         }
