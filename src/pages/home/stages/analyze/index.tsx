@@ -10,10 +10,6 @@ const Wrapper = styled(Layer)`
     flex-direction: column;
     gap: 10px;
 
-    .coming-soon {
-
-    }
-
     .button-row {
         display: flex;
         flex-direction: row;

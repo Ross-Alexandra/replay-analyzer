@@ -20,10 +20,6 @@ const Wrapper = styled.div`
 
         padding: 20px 5px;
     }
-
-    input {
-
-    }
 `;
 
 interface TagManagerProps extends Omit<React.HTMLProps<HTMLDivElement>, 'as'> {
@@ -60,7 +56,9 @@ export const TagManager: React.FC<TagManagerProps> = ({
                     setNextTag(e.target.value);
                 }}
                 onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                    if (nextTag && e.key === 'Enter') {
+                    if (nextTag && (e.key === 'Enter' || e.key === 'Tab')) {
+                        e.preventDefault();
+
                         addTag(nextTag);
                         setNextTag('');
                     }
