@@ -36,6 +36,7 @@ interface FilterProps extends Omit<React.HTMLProps<HTMLDivElement>, 'as'> {
 
 export const FilterInput: React.FC<FilterProps> = ({
     filterBuilder,
+    subFilter,
     onFilterChange,
     onRemoveFilter,
     ...props
@@ -73,7 +74,7 @@ export const FilterInput: React.FC<FilterProps> = ({
 
     return (
         <Wrapper {...props}>
-            <p>Filter</p>
+            <p>{subFilter ? '...or' : 'Filter'}</p>
             <select
                 value={currentFilter.onField}
                 onChange={onFieldChange}

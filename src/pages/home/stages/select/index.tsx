@@ -13,13 +13,27 @@ const Wrapper = styled.div`
     
     gap: 10px;
 
+    .header {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+
+        width: 100%;
+
+        align-items: center;
+
+        p {
+            opacity: 0.75;
+            font-size: 12px;
+        }
+    }
+
     .controls {
         display: flex;
         flex-direction: row;
         gap: 10px;
 
-        align-self: end;
-        align-items: center;
+        margin-left: auto;
     }
 
     button {
@@ -39,23 +53,6 @@ interface SelectProps extends Omit<React.HTMLProps<HTMLDivElement>, 'as'> {
     openMangeRoundsModal: () => void;
 }
 
-// TODO:
-//   2. Selects a set of rounds to analyze
-//     - (/) The user should be able to select from a list of previously uploaded rounds
-//     - (/) The user should be able to select multiple previously uploaded rounds
-//     - (/) The user should be able to select & deselect all previously uploaded rounds
-//     - (/) The user should be able to select & deselect individual previously uploaded rounds
-//
-//     - (/) The user should be able to sort the list of previously uploaded rounds by any column
-
-//     - ( ) The user should be able to filter the list of previously uploaded rounds by tag(s)
-//     - ( ) The user should be able to filter the list of previously uploaded rounds by date
-//     - ( ) The user should be able to filter the list of previously uploaded rounds by map
-//     - ( ) The user should be able to select & deselect all previously uploaded rounds that match the filters
-//
-//     - (/) The user should be able to manage which tags are applied to the selected rounds
-//
-//     - (/) The user should be able to remove previously uploaded rounds
 export const Select: React.FC<SelectProps> = ({
     rounds,
     roundsToAnalyze,
@@ -76,22 +73,30 @@ export const Select: React.FC<SelectProps> = ({
     return (
         <>
             <Wrapper {...props}>
-                <div className="controls">
-                    <Button
-                        buttonType='primary'
-                        onClick={() => setFilterModalOpen(true)}
-                    >
-                        <FilterIcon size={15} />
-                        <p>Filters</p>
-                    </Button>
-                    <Button
-                        buttonType='primary'
-                        disabled={selectedRounds.length === 0}
-                        onClick={openMangeRoundsModal}
-                    >
-                        <SettingsIcon size={17} />
-                        <p>Manage Rounds</p>
-                    </Button>
+                <div className='header'>
+                    <p>
+                        {selectedRounds.length} of {rounds.length} rounds selected
+                        <br />
+                        {rounds.length - filteredRounds.length} rounds hidden
+                    </p>
+
+                    <div className="controls">
+                        <Button
+                            buttonType='primary'
+                            onClick={() => setFilterModalOpen(true)}
+                        >
+                            <FilterIcon size={15} />
+                            <p>Filters</p>
+                        </Button>
+                        <Button
+                            buttonType='primary'
+                            disabled={selectedRounds.length === 0}
+                            onClick={openMangeRoundsModal}
+                        >
+                            <SettingsIcon size={17} />
+                            <p>Manage Rounds</p>
+                        </Button>
+                    </div>
                 </div>
 
                 <SelectTable 

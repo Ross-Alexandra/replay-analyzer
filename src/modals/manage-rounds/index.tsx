@@ -185,8 +185,6 @@ export const ManageRoundsModal: React.FC<ManageRoundsModalProps> = ({
                             buttonType='primary'
                             onClick={async () => {
                                 const fileNames = selectedRounds.map((round) => round.meta.originalFilename);
-                                
-                                console.log(fileNames[0]);
                                 await window.api.showFile(fileNames[0]);
                             }}
                         >

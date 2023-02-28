@@ -121,6 +121,9 @@ export const SelectTable: React.FC<SelectTableProps> = ({
 }) => {
     const [sortedRounds, sorts, toggleSort] = useSortedRounds(rounds);
 
+    const filteredSelectedRounds = selectedRounds.filter((roundId) => {
+        return !!rounds.find((round) => round.meta._id === roundId);
+    });
     return (
         <>
             <Wrapper {...props}>
@@ -130,9 +133,9 @@ export const SelectTable: React.FC<SelectTableProps> = ({
                             <td className='input-cell'>
                                 <input
                                     type="checkbox"
-                                    checked={selectedRounds.length > 0}
+                                    checked={filteredSelectedRounds.length > 0}
                                     onClick={() => {
-                                        if (selectedRounds.length > 0) {
+                                        if (filteredSelectedRounds.length > 0) {
                                             selectNone();
                                             return;
                                         }

@@ -35,7 +35,7 @@ export class FilterBuilder {
         map: 'CLUB_HOUSE',
         tags: '',
         timestamp: new Date().toISOString().split('T')[0],
-        roundNumber: 0,
+        roundNumber: 1,
     };
 
     private static defaultFilter() {

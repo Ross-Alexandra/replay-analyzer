@@ -7,11 +7,11 @@ export function useToggleable(allRounds: RoundWithMeta[], initialRounds: RoundWi
     // Whenever rounds are removed from the rounds array, remove them from the selectedRounds array
     useEffect(() => {
         setSelectedRounds((prev) => {
-            const roundsToRemove = _.differenceWith(prev, allRounds, (id, round) => id === round.meta._id);
+            const roundsToRemove = _.differenceWith(prev, initialRounds, (id, round) => id === round.meta._id);
 
             return _.difference(prev, roundsToRemove);
         });
-    }, [allRounds, setSelectedRounds]);
+    }, [initialRounds, setSelectedRounds]);
 
     const toggleRound = useCallback((round: RoundWithMeta) => {
         onToggle(round);

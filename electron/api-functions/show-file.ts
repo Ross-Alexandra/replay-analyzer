@@ -13,7 +13,6 @@ export const showFile: ApiFunction<[string], ShowFileResponse> = {
         try {
             const replayFilePath = path.join(getRoundStoragePath(), `${originalFilename}.rec`);
 
-            console.log('Showing file', replayFilePath);
             shell.showItemInFolder(replayFilePath);
             return {
                 status: 'success'
