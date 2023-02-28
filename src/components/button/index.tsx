@@ -34,4 +34,9 @@ export const Button = styled.button<ButtonProps>`
         filter: brightness(0.8);
         transition: filter 250ms;
     }
+
+    :disabled {
+        cursor: not-allowed;
+        filter: brightness(0.8);
+    }
 `;

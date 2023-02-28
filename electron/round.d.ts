@@ -4,7 +4,7 @@ interface MatchType {
 }
 
 interface SiegeMap {
-    name: 'CLUBHOUSE' | 'BORDER' | 'KANAL' | 'SKYSCRAPER' | 'TOWER' | 'CHALET' | 'BANK' | 'OREGON' | 'KAFE_DOSTOYEVSKY' | 'VILLA' | 'COASTLINE' | 'STADIUM_BRAVO';
+    name: 'CLUB_HOUSE' | 'BORDER' | 'KANAL' | 'SKYSCRAPER' | 'TOWER' | 'CHALET' | 'BANK' | 'OREGON' | 'KAFE_DOSTOYEVSKY' | 'VILLA' | 'COASTLINE' | 'STADIUM_BRAVO';
     id: number;
 }
 
@@ -98,4 +98,24 @@ interface Round {
 
 type RoundsActivityFeedItem = Activity & {
     roundNumber: number;
+}
+
+interface RoundMeta {
+    _id: string; // An internally used ID.
+    tags: string[];
+    map: string;
+    matchID: string;
+    roundNumber: number;
+    timestamp: string;
+    originalFilename: string;
+}
+
+interface MetaData {
+    version: `${number}.${number}.${number}`;
+    rounds: Record<string, RoundMeta>;
+}
+
+interface RoundWithMeta {
+    meta: RoundMeta;
+    data: Round;
 }

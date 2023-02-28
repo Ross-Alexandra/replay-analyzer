@@ -17,14 +17,11 @@ const Wrapper = styled.div`
 `;
 
 async function setupDissect(navigate: NavigateFunction) {
-    const {status, meta} = await window.api.downloadLatestSupportedDissect();
+    const {status} = await window.api.downloadLatestSupportedDissect();
     if (status !== 'success') {
         navigate('/error');
         return;
     }
-
-    const downloadPath = meta.path;
-    window.localStorage.setItem('r6-dissect-location', downloadPath);
 
     navigate('/');
 }
