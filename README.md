@@ -2,7 +2,7 @@
 A tool which can be used to do basic data analysis on R6 replay files.
 
 ## Latest version
-V0.4.0
+V0.5.0
 
 __Supported Features__
  - Read `.rec` files, and export activity feed to a `.csv`.
