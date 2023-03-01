@@ -18,9 +18,12 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "typeRoots": [
+        "electron/round.d.ts"
+    ]
   },
   "include": [
     "src"
-  ]
+, "electron/round.d.ts"  ]
 }

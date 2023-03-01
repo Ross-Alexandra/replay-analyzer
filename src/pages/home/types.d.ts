@@ -1,1 +1,0 @@
-type InputStages = 'upload'  | 'analyze';

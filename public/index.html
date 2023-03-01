@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
+    <meta name="description" content="Web site created using create-react-app" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
@@ -26,35 +24,57 @@
     -->
     <title>Replay Analyzer</title>
     <style>
-      * {
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-      }
+        * {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
 
-      body {
-          margin: unset;
-          padding: unset;
+        body {
+            margin: unset;
+            padding: unset;
 
-          background-color: #1F2D3D;
+            background-color: #1F2D3D;
 
-          width: 100vw;
-          height: 100vh;
-      }
+            width: 100vw;
+            height: 100vh;
+        }
 
-      h1, h2, h3, h4, h5, h6, p, a {
-          margin: unset;
-          font-family: 'Poppins', sans-serif;
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        label,
+        a,
+        li,
+        td {
+            margin: unset;
+            font-family: 'Poppins', sans-serif;
 
-          color: #F8F9FA;
-      }
+            color: #F8F9FA;
+        }
 
-      #root {
-          width: 100%;
-          height: 100%;
+        #root {
+            width: 100%;
+            height: 100%;
 
-          overflow-x: hidden;
-      }
+            overflow-x: hidden;
+        }
+
+        *::-webkit-scrollbar {
+            width: 5px;
+            background-color: #FFFFFF10;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #000;
+            background-color: #1F2D3D;
+
+            border-radius: 4px;
+        }
     </style>
 
     <!-- Enable google fonts -->
@@ -62,9 +82,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <!-- Poppins Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet"> 
-  </head>
-  <body>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <!--
@@ -77,5 +98,6 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-  </body>
+</body>
+
 </html>
