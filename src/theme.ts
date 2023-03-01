@@ -1,6 +1,8 @@
 const background = '#1F2D3D';
 const layer = '#34495ECC';
+const subLayer = '#FFFFFF20';
 const border = '#34495E';
+const tableBorder = '#FFFFFF40';
 const text = '#F8F9FA';
 
 const primary = '#3E5F75';
@@ -10,7 +12,9 @@ const tertiary = '#9BAABB';
 export const colors = {
     background,
     layer,
+    subLayer,
     border,
+    tableBorder,
     text,
     primary,
     secondary,

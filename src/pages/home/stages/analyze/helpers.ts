@@ -1,16 +1,7 @@
 import _ from 'lodash';
 
-export function getActivityFeeds(rounds: Round[]): RoundsActivityFeedItem[] {
-    return _.chain(rounds)
-        .map(({header, activityFeed}) => {
-            return _.map(activityFeed, (feedItem) => ({roundNumber: header.roundNumber, ...feedItem}));
-        })
-        .flatten()
-        .value();
-}
-
-function removeSequentialPlantStart(feed: RoundsActivityFeedItem[]): RoundsActivityFeedItem[] {
-    return feed.reduce((acc: RoundsActivityFeedItem[], feedItem: RoundsActivityFeedItem, index: number) => {
+export function removeSequentialPlantStart(feed: Activity[]): Activity[] {
+    return feed.reduce((acc: Activity[], feedItem: Activity, index: number) => {
         if (feedItem.type === 'DEFUSER_PLANT_START') {
             const previousFeedItem = feed[index - 1];
             if (previousFeedItem.type === 'DEFUSER_PLANT_START' && previousFeedItem.username === feedItem.username) {
@@ -22,8 +13,8 @@ function removeSequentialPlantStart(feed: RoundsActivityFeedItem[]): RoundsActiv
     }, []);
 }
 
-function removeSequentialDefuseStart(feed: RoundsActivityFeedItem[]): RoundsActivityFeedItem[] {
-    return feed.reduce((acc: RoundsActivityFeedItem[], feedItem: RoundsActivityFeedItem, index: number) => {
+export function removeSequentialDefuseStart(feed: Activity[]): Activity[] {
+    return feed.reduce((acc: Activity[], feedItem: Activity, index: number) => {
         if (feedItem.type === 'DEFUSER_DISABLE_START') {
             const previousFeedItem = feed[index - 1];
             if (previousFeedItem.type === 'DEFUSER_DISABLE_START' && previousFeedItem.username === feedItem.username) {
@@ -33,10 +24,6 @@ function removeSequentialDefuseStart(feed: RoundsActivityFeedItem[]): RoundsActi
 
         return [...acc, feedItem];
     }, []);
-}
-
-export function cleanActivityFeed(feed: RoundsActivityFeedItem[]): RoundsActivityFeedItem[] {
-    return removeSequentialPlantStart(removeSequentialDefuseStart(feed));
 }
 
 export function convertObjectToTable(data: object[]) {

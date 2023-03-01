@@ -8,7 +8,7 @@ const Wrapper = styled.input`
 
     padding: 5px 10px;
 
-    background-color: ${theme.colors.layer};
+    background-color: ${theme.colors.subLayer};
     border: 1px solid ${theme.colors.border};
     border-radius: 4px;
 
