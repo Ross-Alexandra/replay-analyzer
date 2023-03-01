@@ -112,7 +112,7 @@ export const Home = () => {
                 )}
 
                 {stage === 'analyze' && (
-                    <Analyze rounds={roundsToAnalyze.map(round => round.data)} />
+                    <Analyze rounds={roundsToAnalyze} />
                 )}
             </Wrapper>
 

@@ -1,11 +1,14 @@
 import styled from '@emotion/styled';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import * as theme from '../../../../theme';
 import { Button, Spinner } from '../../../../components';
 import _ from 'lodash';
 import { SetTags } from '../../../../modals/set-tags';
 
 const Wrapper = styled.div`
+    height: 100%;
+    overflow: auto;
+
     .drag-drop {
         position: relative;
         display: grid;
@@ -32,7 +35,6 @@ const Wrapper = styled.div`
         grid-template-columns: repeat(2, minmax(0, 1fr));
         margin-block: 5px;
 
-        max-height: 200px;
         overflow-y: auto;
     }
 `;
@@ -95,9 +97,19 @@ export const Upload: React.FC<UploadProps> = ({
         }, 1000);
     }, [files, setEstimatedSavingTime]);
 
+    useEffect(() => {
+        if (saving && estimatedSavingTime >= 0) {
+            document.getElementById('saving-spinner')?.scrollIntoView({behavior: 'smooth'});
+        } else if (saving && estimatedSavingTime === -1) {
+            document.getElementById('saving-spinner')?.scrollIntoView({behavior: 'smooth'});
+        }
+
+    }, [estimatedSavingTime, saving]);
+
     return (
         <>
             <Wrapper {...props}>
+                <h1>Upload Files</h1>
                 <div className='drag-drop'>
                     <p>Drag & Drop replay files here!</p>
                     <input
@@ -109,7 +121,6 @@ export const Upload: React.FC<UploadProps> = ({
                     />
                 </div>
 
-                {files.length > 0 && <h3>Files to upload:</h3>}
                 <ul>
                     {files.map((file) => (
                         <li key={file.path}>{file.path.split('\\').pop()?.split('.').shift()}</li>
@@ -118,9 +129,11 @@ export const Upload: React.FC<UploadProps> = ({
 
                 {saving ? (
                     <>
-                        <Spinner />
                         {estimatedSavingTime >= -1 && <p>Estimated Time to completion: {estimatedSavingTime}s</p>}
                         {estimatedSavingTime === -1 && <p>This is taking longer than expected...</p>}
+                        <Spinner 
+                            id='saving-spinner'
+                        />
                     </>
                 ) : (
                     <>

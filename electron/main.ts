@@ -22,7 +22,7 @@ function createWindow() {
         }
     });
 
-    win.setResizable(false);
+    win.setResizable(true);
 
     if (isDev) {
         win.loadURL('http://localhost:3000/index.html');

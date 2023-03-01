@@ -54,38 +54,33 @@ interface BaseActivity {
     type: string;
     time: string;
     timeInSeconds: number;
+    username: string;
 }
 
 interface LocateObjectiveActivity extends BaseActivity {
     type: 'LOCATE_OBJECTIVE';
-    username: string
 }
 
 interface KillActivity extends BaseActivity {
     type: 'KILL';
-    username: string;
     target: string;
     headshot: boolean;
 }
 
 interface PlantStartActivity extends BaseActivity {
     type: 'DEFUSER_PLANT_START';
-    username: string;
 }
 
 interface PlantCompleteActivity extends BaseActivity {
     type: 'DEFUSER_PLANT_COMPLETE';
-    username: string;
 }
 
 interface DisableStartActivity extends BaseActivity {
     type: 'DEFUSER_DISABLE_START';
-    username: string;
 }
 
 interface DisableCompleteActivity extends BaseActivity {
     type: 'DEFUSER_DISABLE_COMPLETE';
-    username: string;
 }
 
 type Activity = LocateObjectiveActivity | KillActivity | PlantStartActivity | PlantCompleteActivity | DisableStartActivity | DisableCompleteActivity;
@@ -94,10 +89,6 @@ type ActivityFeed = Activity[];
 interface Round {
     header: Header;
     activityFeed: ActivityFeed;
-}
-
-type RoundsActivityFeedItem = Activity & {
-    roundNumber: number;
 }
 
 interface RoundMeta {
