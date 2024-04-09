@@ -1,16 +1,21 @@
 import _ from 'lodash';
 import { convertObjectToTable, exportDataToCSV, removeSequentialDefuseStart, removeSequentialPlantStart } from '../../helpers';
 
-export function getActivityFeeds(rounds: Round[]): Activity[] {
+export function getActivityFeeds(rounds: Round[]) {
     return _.chain(rounds)
-        .map(({activityFeed}) => {
-            return _.map(activityFeed, (feedItem) => ({...feedItem}));
+        .map(({players, matchFeedback}) => {
+            return _.map(matchFeedback, (feedItem) => ({
+                ...feedItem,
+                type: feedItem.type.name,
+                operator: players.find(player => player.username == feedItem.username)?.operator.name,
+            }));
         })
         .flatten()
         .value();
 }
 
-export function cleanActivityFeed(feed: Activity[]): Activity[] {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function cleanActivityFeed(feed: any[]) {
     return removeSequentialPlantStart(removeSequentialDefuseStart(feed));
 }
 

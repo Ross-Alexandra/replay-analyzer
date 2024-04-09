@@ -1,41 +1,125 @@
 interface MatchType {
-    name: 'QUICK_MATCH' | 'MATCHMAKING_PVP_RANKED' | 'MATCHMAKING_PVE' | 'MATCHMAKING_PVE_PARTY' | 'MATCHMAKING_PVE_LONEWOLF' | 'OPERATIONS' | 'CUSTOMGAME_PVP' | 'CUSTOMGAME_PVP_DEDICATED' | 'DEV' | 'MATCHMAKING_PVP_EVENT' | 'MATCHMAKING_PVP_NEWCOMER' | 'MATCHMAKING_PVP_UNRANKED' | 'MATCHREPLAY' | 'PLATFORM_TOURNAMENT',
+    name: 'QuickMatch' | 'Ranked' | 'CustomGameLocal' | 'CustomGameOnline' | 'Standard',
     id: number
 }
 
 interface SiegeMap {
-    name: 'CLUB_HOUSE' | 'BORDER' | 'KANAL' | 'SKYSCRAPER' | 'TOWER' | 'CHALET' | 'BANK' | 'OREGON' | 'KAFE_DOSTOYEVSKY' | 'VILLA' | 'COASTLINE' | 'STADIUM_BRAVO';
+    name: 'ClubHouse' | 'KafeDostoyevsky' | 'Kanal' | 'Yacht' | 'PresidentialPlane' | 'BartlettU' | 'Coastline' | 'Tower' | 'Villa' | 'Fortress' | 'HerefordBase' | 'ThemePark' | 'Oregon' | 'House' | 'Chalet' | 'Skyscraper' | 'Border' | 'Favela' | 'Bank' | 'Outback' | 'EmeraldPlains' | 'StadiumBravo' | 'NighthavenLabs' | 'Consulate' | 'Lair';
     id: number;
 }
 
 interface GameMode {
-    name: 'BOMB',
+    name: 'Bomb' | 'SecureArea' | 'Hostage',
     id: number;
 }
+
+type WinCondition = 'KilledOpponents' | 'SecuredArea' | 'DisabledDefuser' | 'DefusedBomb' | 'ExtractedHostage' | 'Time';
+type TeamRole = 'Attack' | 'Defense';
 
 interface Team {
     name: string;
     score: number;
+    won: boolean;
+    winCondition?: WinCondition;
+    role?: TransformStreamDefaultController;
+}
+
+interface Operator {
+    name: string;
+    id: number;
 }
 
 interface Player {
     id: string;
-    profileID: string;
+    profileID?: string;
     username: string;
     teamIndex: number;
-    heroName: number;
+    heroName?: number;
     alliance: number;
-    roleImage: number;
-    roleName: string;
-    rolePortrait: number;
+    roleImage?: number;
+    roleName?: string;
+    rolePortrait?: number;
+    operator: Operator;
+    spawn?: string;
 }
 
-interface Header {
+interface PlayerRoundStats {
+    username: string;
+    died: boolean;
+    score: number;
+    kills: number;
+    assists: number;
+    headshots: number;
+    headshotPercentage: number;
+    '1vX'?: number;
+}
+
+interface MatchUpdateType {
+    name: string;
+    id: number;
+}
+
+interface BaseActivity {
+    type: MatchUpdateType;
+    time: string;
+    timeInSeconds: number;
+    username: string;
+}
+
+interface KillActivity extends BaseActivity {
+    type: {
+        name: 'Kill';
+        id: 0;
+    };
+    target: string;
+    headshot: boolean;
+}
+
+interface PlantStartActivity extends BaseActivity {
+    type: {
+        name: 'DefuserPlantStart';
+        id: 2;
+    };
+}
+
+interface PlantCompleteActivity extends BaseActivity {
+    type: {
+        name: 'DefuserPlantComplete';
+        id: 3;
+    };
+}
+
+interface DisableStartActivity extends BaseActivity {
+    type: {
+        name: 'DefuserDisableStart';
+        id: 4;
+    };
+}
+
+interface DisableCompleteActivity extends BaseActivity {
+    type: {
+        name: 'DefuserDisableComplete';
+        id: 5;
+    };
+}
+
+interface LocateObjectiveActivity extends BaseActivity {
+    type: {
+        name: 'LocateObjective';
+        id: 6;
+    };
+}
+
+type MatchUpdate = LocateObjectiveActivity | KillActivity | PlantStartActivity | PlantCompleteActivity | DisableStartActivity | DisableCompleteActivity;
+type MatchFeedback = MatchUpdate[];
+
+interface Round {
     gameVersion: `Y${number}S${number}`;
     codeVersion: number;
     timestamp: string;
     matchType: MatchType;
     map: SiegeMap;
+    site?: string;
     recordingPlayerID: string;
     recordingProfileID: string;
     additionalTags: string;
@@ -48,47 +132,8 @@ interface Header {
     gmSettings: number[];
     playlistCategory: number;
     matchID: string;
-}
-
-interface BaseActivity {
-    type: string;
-    time: string;
-    timeInSeconds: number;
-    username: string;
-}
-
-interface LocateObjectiveActivity extends BaseActivity {
-    type: 'LOCATE_OBJECTIVE';
-}
-
-interface KillActivity extends BaseActivity {
-    type: 'KILL';
-    target: string;
-    headshot: boolean;
-}
-
-interface PlantStartActivity extends BaseActivity {
-    type: 'DEFUSER_PLANT_START';
-}
-
-interface PlantCompleteActivity extends BaseActivity {
-    type: 'DEFUSER_PLANT_COMPLETE';
-}
-
-interface DisableStartActivity extends BaseActivity {
-    type: 'DEFUSER_DISABLE_START';
-}
-
-interface DisableCompleteActivity extends BaseActivity {
-    type: 'DEFUSER_DISABLE_COMPLETE';
-}
-
-type Activity = LocateObjectiveActivity | KillActivity | PlantStartActivity | PlantCompleteActivity | DisableStartActivity | DisableCompleteActivity;
-type ActivityFeed = Activity[];
-
-interface Round {
-    header: Header;
-    activityFeed: ActivityFeed;
+    matchFeedback: MatchFeedback;
+    stats: PlayerRoundStats[];
 }
 
 interface RoundMeta {

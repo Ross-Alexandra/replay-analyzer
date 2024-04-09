@@ -148,7 +148,7 @@ export const SelectTable: React.FC<SelectTableProps> = ({
                                     />
                                 </td>
                                 <td>{_.snakeCase(round.meta.map).replaceAll('_', ' ')}</td>
-                                <td>Round #{round.data.header.roundNumber + 1}</td>
+                                <td>Round #{round.data.roundNumber + 1}</td>
                                 <td>{moment(round.meta.timestamp).format('MMM Do, YYYY')}</td>
                                 <td className='tag-cell'>
                                     {round.meta.tags.map(tag => 
@@ -161,6 +161,5 @@ export const SelectTable: React.FC<SelectTableProps> = ({
                 </table>
             </Wrapper>
         </>
-
     );
 };
