@@ -1,10 +1,10 @@
 import _ from 'lodash';
 
-export function removeSequentialPlantStart(feed: Activity[]): Activity[] {
-    return feed.reduce((acc: Activity[], feedItem: Activity, index: number) => {
-        if (feedItem.type === 'DEFUSER_PLANT_START') {
+export function removeSequentialPlantStart(feed: MatchUpdate[]): MatchUpdate[] {
+    return feed.reduce((acc: MatchUpdate[], feedItem: MatchUpdate, index: number) => {
+        if (feedItem.type.name === 'DefuserPlantStart') {
             const previousFeedItem = feed[index - 1];
-            if (previousFeedItem.type === 'DEFUSER_PLANT_START' && previousFeedItem.username === feedItem.username) {
+            if (previousFeedItem.type.name === 'DefuserPlantStart' && previousFeedItem.username === feedItem.username) {
                 return acc;
             }
         }
@@ -13,11 +13,11 @@ export function removeSequentialPlantStart(feed: Activity[]): Activity[] {
     }, []);
 }
 
-export function removeSequentialDefuseStart(feed: Activity[]): Activity[] {
-    return feed.reduce((acc: Activity[], feedItem: Activity, index: number) => {
-        if (feedItem.type === 'DEFUSER_DISABLE_START') {
+export function removeSequentialDefuseStart(feed: MatchUpdate[]): MatchUpdate[] {
+    return feed.reduce((acc: MatchUpdate[], feedItem: MatchUpdate, index: number) => {
+        if (feedItem.type.name === 'DefuserDisableStart') {
             const previousFeedItem = feed[index - 1];
-            if (previousFeedItem.type === 'DEFUSER_DISABLE_START' && previousFeedItem.username === feedItem.username) {
+            if (previousFeedItem.type.name === 'DefuserDisableStart' && previousFeedItem.username === feedItem.username) {
                 return acc;
             }
         }

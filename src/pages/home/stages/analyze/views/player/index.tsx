@@ -58,10 +58,10 @@ export const Players: React.FC<PlayerTableProps> = ({
 
     const playerStatsByPlayer = useMemo(() => {
         const nonUniquePlayers = rounds.reduce((acc, round) => {
-            const recordingPlayerId = round.data.header.recordingPlayerID;
-            const recordingPlayerTeamIndex = _.find(round.data.header.players, p => p.id === recordingPlayerId)?.teamIndex ?? -1;
+            const recordingPlayerId = round.data.recordingPlayerID;
+            const recordingPlayerTeamIndex = _.find(round.data.players, p => p.id === recordingPlayerId)?.teamIndex ?? -1;
 
-            const players = round.data.header.players.filter(p => {
+            const players = round.data.players.filter(p => {
                 if (onlyShowRecordingPlayerTeam) {
                     return p.teamIndex === recordingPlayerTeamIndex;
                 }
