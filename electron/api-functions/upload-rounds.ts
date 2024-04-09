@@ -24,7 +24,7 @@ function storeReplayFile(groupFolder: string, file: string) {
 }
 
 function saveReplayJson(file: string, saveTo: string) {
-    const parameters = [file, '-x', saveTo];
+    const parameters = [file, '-o', saveTo];
     execFileSync(getUtilityLocation(), parameters);
 }
 
@@ -47,10 +47,10 @@ export const uploadRounds: ApiFunction<[string[], string[]], UploadRoundGroupRes
                 fileMetadata.rounds[fileName] = {
                     _id: uuidv4(),
                     tags,
-                    map: _.get(fileJson, 'header.map.name'),
-                    matchID: _.get(fileJson, 'header.matchID'),
-                    roundNumber: _.get(fileJson, 'header.roundNumber'),
-                    timestamp: _.get(fileJson, 'header.timestamp'),
+                    map: _.get(fileJson, 'map.name'),
+                    matchID: _.get(fileJson, 'matchID'),
+                    roundNumber: _.get(fileJson, 'roundNumber'),
+                    timestamp: _.get(fileJson, 'timestamp'),
                     originalFilename: fileName
                 };
 

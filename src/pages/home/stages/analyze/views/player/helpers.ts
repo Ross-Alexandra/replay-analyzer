@@ -2,28 +2,30 @@ import _ from 'lodash';
 
 const TIME_FOR_TRADE = 10; // seconds
 
-function getPlayerKills(activities: Activity[], username: string) {
-    return activities.filter(activity => activity.type === 'KILL' && activity.username === username).length;
+function getPlayerKills(activities: MatchUpdate[], username: string) {
+    return activities.filter(activity => activity.type.name === 'Kill' && activity.username === username).length;
 }
 
-function getPlayerHeadshots(activities: Activity[], username: string) {
-    return activities.filter(activity => activity.type === 'KILL' && activity.username === username && activity.headshot).length;
+function getPlayerHeadshots(activities: MatchUpdate[], username: string) {
+    // @ts-expect-error - this type does not work any longer with the new MatchUpdate type object
+    return activities.filter(activity => activity.type.name === 'Kill' && activity.username === username && activity.headshot).length;
 }
 
-function getPlayerDeaths(activities: Activity[], username: string) {
-    return activities.filter(activity => activity.type === 'KILL' && activity.target === username).length;
+function getPlayerDeaths(activities: MatchUpdate[], username: string) {
+    // @ts-expect-error - this type does not work any longer with the new MatchUpdate type objec
+    return activities.filter(activity => activity.type.name === 'Kill' && activity.target === username).length;
 }
 
-function getPlayerPlants(activities: Activity[], username: string) {
-    return activities.filter(activity => activity.type === 'DEFUSER_PLANT_COMPLETE' && activity.username === username).length;
+function getPlayerPlants(activities: MatchUpdate[], username: string) {
+    return activities.filter(activity => activity.type.name === 'DefuserPlantComplete' && activity.username === username).length;
 }
 
-function getPlayerDefuses(activities: Activity[], username: string) {
-    return activities.filter(activity => activity.type === 'DEFUSER_DISABLE_COMPLETE' && activity.username === username).length;
+function getPlayerDefuses(activities: MatchUpdate[], username: string) {
+    return activities.filter(activity => activity.type.name === 'DefuserDisableComplete' && activity.username === username).length;
 }
 
-function getPlayerTrades(activities: Activity[], username: string) {
-    const killActivities = activities.filter(activity => activity.type === 'KILL');
+function getPlayerTrades(activities: MatchUpdate[], username: string) {
+    const killActivities = activities.filter(activity => activity.type.name === 'Kill');
     
     return _.chain(killActivities)
         .orderBy('timeInSeconds', 'desc')
@@ -43,24 +45,24 @@ function getPlayerTrades(activities: Activity[], username: string) {
             } else {
                 return acc;
             }
-        }, [] as Activity[])
+        }, [] as MatchUpdate[])
         .filter(activity => activity.username === username)
         .value()
         .length;
 }
 
-function getPlayerWasOpeningDeath(activities: Activity[], username: string) {
+function getPlayerWasOpeningDeath(activities: MatchUpdate[], username: string) {
     const firstKill = _.chain(activities)
-        .filter(activity => activity.type === 'KILL')
+        .filter(activity => activity.type.name === 'Kill')
         .first()
         .value() as KillActivity | undefined;
 
     return firstKill && firstKill.target === username;
 }
 
-function getPlayerGotOpeningKill(activities: Activity[], username: string) {
+function getPlayerGotOpeningKill(activities: MatchUpdate[], username: string) {
     const firstKill = _.chain(activities)
-        .filter(activity => activity.type === 'KILL')
+        .filter(activity => activity.type.name === 'Kill')
         .first()
         .value() as KillActivity | undefined;
 
@@ -68,7 +70,7 @@ function getPlayerGotOpeningKill(activities: Activity[], username: string) {
 }
 
 function getPlayerStatisticsForRound(round: RoundWithMeta, username: string) {
-    const activityFeed = round.data.activityFeed;
+    const activityFeed = round.data.matchFeedback;
 
     // Get the player stats related to 
     // kills & deaths
@@ -108,7 +110,7 @@ function getPlayerStatisticsForRound(round: RoundWithMeta, username: string) {
 
 function getRoundsPlayerWasIn(rounds: RoundWithMeta[], username: string) {
     return rounds.filter(round => {
-        const players = round.data.header.players;
+        const players = round.data.players;
 
         return Boolean(_.find(players, { username }));
     });
@@ -117,7 +119,7 @@ function getRoundsPlayerWasIn(rounds: RoundWithMeta[], username: string) {
 function getMatchesPlayerWasIn(rounds: RoundWithMeta[], username: string) {
     const playerRounds = getRoundsPlayerWasIn(rounds, username);
 
-    return _.uniq(playerRounds.map(round => round.data.header.matchID));
+    return _.uniq(playerRounds.map(round => round.data.matchID));
 }
 
 export function getPlayerStatistics(rounds: RoundWithMeta[], username: string) {
