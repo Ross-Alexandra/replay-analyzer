@@ -1,9 +1,6 @@
 # Replay Analyzer
 A tool which can be used to do basic data analysis on R6 replay files.
 
-## Latest version
-V0.4.0
-
 ## What can it do?
 ### Upload & Save your replay files for later use
 ![upload_rounds](.assets/upload_rounds.png)
