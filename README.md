@@ -43,3 +43,20 @@ Please show your support for the developer of r6-dissect, as without them this p
 # Development
 This application is an Electron/React app. An api for the web interface is exposed through `electron/api.ts`. This API is used by the react app in `/src` to interface directly with
 r6-dissect, and the file system.
+
+## Running
+To run the project locally, you'll first need to install the dependencies:
+
+```bash
+npm install
+```
+
+Once you have those installed, you can run the development version of the application with:
+
+```bash
+npm run electron:dev
+```
+
+> Note, if you are doing development on linux, you will likely need to `chmod +x` the
+install `dissect.exe` file. It can be found at, `~/.config/replay-analyzer/dissect`
+by default after the app at least once.

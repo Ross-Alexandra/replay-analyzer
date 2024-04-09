@@ -7,13 +7,11 @@ function getPlayerKills(activities: MatchUpdate[], username: string) {
 }
 
 function getPlayerHeadshots(activities: MatchUpdate[], username: string) {
-    // @ts-expect-error - this type does not work any longer with the new MatchUpdate type object
-    return activities.filter(activity => activity.type.name === 'Kill' && activity.username === username && activity.headshot).length;
+    return activities.filter(activity => activity.type.name === 'Kill' && activity.username === username && 'headshot' in activity && activity.headshot).length;
 }
 
 function getPlayerDeaths(activities: MatchUpdate[], username: string) {
-    // @ts-expect-error - this type does not work any longer with the new MatchUpdate type objec
-    return activities.filter(activity => activity.type.name === 'Kill' && activity.target === username).length;
+    return activities.filter(activity => activity.type.name === 'Kill' && 'target' in activity && activity.target === username).length;
 }
 
 function getPlayerPlants(activities: MatchUpdate[], username: string) {

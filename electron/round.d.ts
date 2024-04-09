@@ -66,13 +66,6 @@ interface BaseActivity {
     username: string;
 }
 
-interface LocateObjectiveActivity extends BaseActivity {
-    type: {
-        name: 'LocateObjective';
-        id: 6;
-    };
-}
-
 interface KillActivity extends BaseActivity {
     type: {
         name: 'Kill';
@@ -107,6 +100,13 @@ interface DisableCompleteActivity extends BaseActivity {
     type: {
         name: 'DefuserDisableComplete';
         id: 5;
+    };
+}
+
+interface LocateObjectiveActivity extends BaseActivity {
+    type: {
+        name: 'LocateObjective';
+        id: 6;
     };
 }
 
