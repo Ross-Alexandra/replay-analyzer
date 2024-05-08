@@ -6,7 +6,7 @@ import { createWriteStream } from 'fs';
 import { ensureFolderExists, getInstallPath, getUtilityLocation } from './helpers';
 import { ApiFunction } from './type';
 
-const LATEST_SUPPORTED_VERSION = 'v0.19.1';
+const LATEST_SUPPORTED_VERSION = 'v0.19.2';
 const LATEST_SUPPORTED_VERSION_DOWNLOAD = `https://github.com/redraskal/r6-dissect/releases/download/${LATEST_SUPPORTED_VERSION}/r6-dissect-${LATEST_SUPPORTED_VERSION}-windows-amd64.zip`;
 
 interface DownloadLatestSupportedDissectResponse {
